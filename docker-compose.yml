@@ -1,0 +1,32 @@
+services:
+  brain-frog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: brain-frog
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=file:./db/dev.db
+      - NODE_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - DEFAULT_MODEL=${DEFAULT_MODEL:-gpt-4}
+      - DEFAULT_TEMPERATURE=${DEFAULT_TEMPERATURE:-0.7}
+      - DEFAULT_MAX_TOKENS=${DEFAULT_MAX_TOKENS:-4096}
+      - SECURITY_LEVEL=${SECURITY_LEVEL:-high}
+      - ENABLE_MEMORY=${ENABLE_MEMORY:-true}
+      - ENABLE_SKILLS=${ENABLE_SKILLS:-true}
+    volumes:
+      - brain-frog-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/agent/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  brain-frog-data:
+    driver: local
