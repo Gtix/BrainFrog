@@ -2,7 +2,7 @@
 
 <img src="brain-frog-logo.png" alt="Brain Frog Logo" width="120" height="120" />
 
-# Brain Frog
+# Brain Frog - Personal AI Assistent
 
 **The AI Agent That Shows Its Work**
 
